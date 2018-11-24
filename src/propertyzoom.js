@@ -4,6 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Header from './components/header';
 import Footer from './components/footer';
 import Properties from './components/properties';
+import LoginModal from './components/loginModal';
 import { connect } from 'react-redux';
 import { createAccount, signIn } from './actions/accountActions'
 import * as firebase from 'firebase';
@@ -14,18 +15,27 @@ class Propertyzoom extends Component {
     super(props);
 
     this.state = {
-      userId: ""
+      open: false
     }
   }
 
   componentDidMount() {
-    this.props.signIn("asdfaf@yaga.com", "yeetyeet");
+  }
+
+  launchLoginModal = () => {
+    console.log("here")
+    this.setState({open: true})
+  }
+
+  closeLoginModal = () => {
+    this.setState({open: false})
   }
 
   render() {
     return (
       <div>
-        <Header userId={this.props.userId}/>
+        <Header userId={this.props.userId} login={this.launchLoginModal} />
+        <LoginModal onClose={this.closeLoginModal} open={this.state.open}/>
         <Properties/>
         <Footer/>
       </div>

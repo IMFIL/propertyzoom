@@ -15,11 +15,11 @@ export default class Header extends Component {
           </Grid.Column>
           <Grid.Column width={5}>
             { ! this.props.userId &&
-              <Button floated='right' color='teal'>Login</Button>
+              <Button floated='right' color='teal' onClick={() => this.props.login()}>Login</Button>
             }
 
             { this.props.userId &&
-              <Button floated='right' color='teal'>My account</Button>
+              <Button floated='right' color='teal' onClick={() => this.props.login()}>My account</Button>
             }
           </Grid.Column>
         </Grid>
