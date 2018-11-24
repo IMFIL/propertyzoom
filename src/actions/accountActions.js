@@ -31,7 +31,7 @@ export const signIn = (email, password) => dispatch => {
     const uid = data.user.uid;
     dispatch({
      type: SIGN_IN,
-     payload: {}
+     payload: {userId: uid}
     });
   })
   .catch(function(error) {
@@ -46,11 +46,9 @@ export const createAccount = (email, password) => dispatch => {
   firebase.auth().createUserWithEmailAndPassword(email, password)
   .then( (user) => {
     const uid = user.uid;
-
-    console.log(uid);
     dispatch({
      type: CREATE_ACCOUNT,
-     payload: {}
+     payload: {userId: uid}
     });
   })
   .catch(function(error) {

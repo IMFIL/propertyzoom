@@ -6,25 +6,32 @@ export default class Header extends Component {
 
   render() {
     return (
-      <Segment>
+      <Segment style={styles.headerContainer}>
         <Grid>
           <Grid.Column width={3}>
             <Image size='small' src={require('../assets/propertyZoom.png')} />
           </Grid.Column>
-          <Grid.Column width={11}>
+          <Grid.Column width={8}>
           </Grid.Column>
-          <Grid.Column width={2} textAlign='center'>
-            { this.props.userId == "" &&
-              <Button color='teal'>Login</Button>
+          <Grid.Column width={5}>
+            { ! this.props.userId &&
+              <Button floated='right' color='teal'>Login</Button>
             }
 
-            { this.props.userId != "" &&
-              <Button color='teal'>My account</Button>
+            { this.props.userId &&
+              <Button floated='right' color='teal'>My account</Button>
             }
           </Grid.Column>
         </Grid>
       </Segment>
     );
   }
+}
 
+const styles = {
+  headerContainer: {
+    position: "absolute",
+    top: 0,
+    width: "100%"
+  }
 }

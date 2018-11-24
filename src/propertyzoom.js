@@ -35,7 +35,7 @@ class Propertyzoom extends Component {
 
 const mapStateToProps = state => {
   return {
-    userID: state.userInfo.userId,
+    userId: state.userInfo.userId,
     }
 };
 
