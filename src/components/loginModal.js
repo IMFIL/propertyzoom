@@ -57,21 +57,18 @@ export default class Header extends Component {
           open={this.props.open}
           onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)}
           transition={{ animation: 'scale', duration: 500 }}>
-          <Modal  style={styles.modal} size="large" open={this.props.open} onClose={() => this.props.onClose()} >
+          <Modal  style={styles.modal} size="tiny" open={this.props.open} onClose={() => this.props.onClose()} >
+            <Modal.Header>{this.state.login ? "Login" : "Create Account"}</Modal.Header>
             <Modal.Content >
-              <Grid columns={3} centered stackable style={styles.grid}>
-                <Grid.Column width={5}>
-                </Grid.Column>
-                <Grid.Column width={6}>
+              <Grid columns={1} centered>
+                <Grid.Column width={14}>
                   <Form>
                     <Form.Input field="username" value={this.state.username} onChange={this.handleFormChange} placeholder='Username'/>
                     <Form.Input field="password" value={this.state.password} onChange={this.handleFormChange} placeholder='Password'/>
                     {createAccountFields}
-                    <Button type='submit'>Submit</Button>
-                    <Button onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
+                    <Button style={styles.controlButtons} type='submit'>Submit</Button>
+                    <Button style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
                   </Form>
-                </Grid.Column>
-                <Grid.Column width={5}>
                 </Grid.Column>
               </Grid>
             </Modal.Content>
@@ -86,8 +83,7 @@ const styles = {
   modal: {
     maxWidth: "94%"
   },
-  grid:{
-    maxWidth: "100%",
-    maxHeight: "100%"
+  controlButtons: {
+    marginTop: "10px"
   }
 }
