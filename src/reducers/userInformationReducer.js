@@ -1,4 +1,4 @@
-import { CREATE_ACCOUNT, SIGN_IN } from '../actions/types';
+import { CREATE_ACCOUNT, SIGN_IN, SIGN_OUT } from '../actions/types';
 
 const initialState = {
 
@@ -11,11 +11,17 @@ export default function(state = initialState, action) {
         ...state,
         ...action.payload
       }
-      case SIGN_IN:
-        return {
-          ...state,
-          ...action.payload
-        }
+    case SIGN_IN:
+      return {
+        ...state,
+        ...action.payload
+      }
+    case SIGN_OUT:
+      return {
+        ...state,
+        ...action.payload
+      }
+
     default:
       return state;
   }

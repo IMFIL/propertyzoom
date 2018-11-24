@@ -1,4 +1,4 @@
-import { CREATE_ACCOUNT, SIGN_IN } from './types';
+import { CREATE_ACCOUNT, SIGN_IN, SIGN_OUT } from './types';
 import * as firebase from 'firebase';
 
 var config = {
@@ -16,6 +16,13 @@ const Account = db.child('Account');
 const Customer = db.child('Customer');
 const Owner = db.child('Owner');
 const Property = db.child('Property');
+
+export const signOut = () => dispatch => {
+  dispatch({
+   type: SIGN_OUT,
+   payload: {}
+  });
+}
 
 
 export const signIn = (email, password) => dispatch => {
