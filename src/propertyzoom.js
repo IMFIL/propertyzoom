@@ -23,7 +23,6 @@ class Propertyzoom extends Component {
   }
 
   launchLoginModal = () => {
-    console.log("here")
     this.setState({open: true})
   }
 
