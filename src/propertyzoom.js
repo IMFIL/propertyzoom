@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import { connect } from 'react-redux';
-import { signIn } from './actions/signInAction'
+import { createAccount, signIn } from './actions/accountActions'
+import * as firebase from 'firebase';
 
 class Propertyzoom extends Component {
 
   componentDidMount() {
-    this.props.signIn();
+    this.props.signIn("asdfaf@yaga.com", "yeetyeet");
   }
 
   render() {
@@ -29,7 +30,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-   signIn: () => dispatch(signIn())
+   createAccount: (email, password) => dispatch(createAccount(email, password)),
+   signIn: (email, password) => dispatch(signIn(email, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Propertyzoom);
