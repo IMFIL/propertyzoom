@@ -1,7 +1,14 @@
 import { CREATE_ACCOUNT, SIGN_IN, SIGN_OUT } from '../actions/types';
 
 const initialState = {
-
+  userId: "",
+  error: "",
+  fname: "",
+  lname: "",
+  username: "" ,
+  maximumRent: "",
+  email: "",
+  accountType: "" 
 }
 
 export default function(state = initialState, action) {

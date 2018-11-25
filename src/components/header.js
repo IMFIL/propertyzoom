@@ -19,7 +19,7 @@ export default class Header extends Component {
             }
 
             { this.props.userId &&
-              <Button floated='right' color='teal' onClick={() => this.props.login()}>My account</Button>
+              <Button floated='right' color='teal' onClick={() => this.props.launchMyAccount()}>My account</Button>
             }
           </Grid.Column>
         </Grid>

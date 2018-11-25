@@ -6,8 +6,10 @@ import {
   Button,
   TransitionablePortal,
   Modal,
-  Form } from 'semantic-ui-react'
+  Form,
+  Label } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
+import * as emailRegex from "email-regex";
 
 const options = [
   { key: 'Owner', text: 'Owner', value: 'Owner' },
@@ -25,10 +27,12 @@ export default class Header extends Component {
       fname: "",
       lname: "",
       username: "",
-      passwornd: "",
+      password: "",
       maximumRent: "",
       email: "",
-      accountType: ""
+      accountType: "",
+      fieldsToCorrectCreateAccount: {fname: true, lname: true, username: true, password: true, maximumRent: true, email: true, accountType: true},
+      fieldsToCorrectLogin: {email: true, password: true}
     }
   }
 
@@ -39,18 +43,77 @@ export default class Header extends Component {
     })
   }
 
+  submitRegistrationForm = () => {
+    const { fname, lname, username, password, maximumRent, email, accountType } = this.state;
+    const type =  this.state.login ? "login" : "createAccount";
+    const userInformation = type == "createAccount" ? {
+      fname: fname,
+      lname: lname,
+      username: username,
+      password: password,
+      maximumRent: maximumRent,
+      email: email,
+      accountType: accountType
+    } :
+    {
+      email: email,
+      password: password,
+    };
+    if (emailRegex({exact: true}).test(email)) {
+      this.props.onSubmit(this.state.login ? "login" : "createAccount", userInformation);
+    }
+  }
+
+  handleAccountTypeChange = (e, { value })  => {
+    var fieldsCreateAccount = this.state.fieldsToCorrectCreateAccount;
+
+    if(value) {
+      delete fieldsCreateAccount.accountType;
+    }
+
+    else {
+      fieldsCreateAccount.accountType = true;
+    }
+
+    this.setState({accountType: value, fieldsToCorrectCreateAccount: fieldsCreateAccount});
+
+  }
+
   handleFormChange = (e, { field }) => {
-    this.setState({[field]: e.target.value})
+    var fieldsLogin = this.state.fieldsToCorrectLogin;
+    var fieldsCreateAccount = this.state.fieldsToCorrectCreateAccount;
+
+    if(e.target.value != "") {
+      delete fieldsLogin[field];
+      delete fieldsCreateAccount[field];
+    }
+    else {
+      if(field == "password" || field == "email") {
+        fieldsLogin[field] = true;
+        fieldsCreateAccount[field] = true;
+      }
+
+      else {
+        const fieldToCorrectType = this.state.login ? fieldsLogin : fieldsCreateAccount
+        fieldToCorrectType[field] = true;
+      }
+    }
+
+    this.setState({[field]: e.target.value, fieldsToCorrectCreateAccount: fieldsCreateAccount, fieldsToCorrectLogin: fieldsLogin});
   }
 
   render() {
     const createAccountFields = this.state.login ? [] : [
       <Form.Input key="fname" value={this.state.fname} field="fname" onChange={this.handleFormChange} placeholder='First Name'/>,
       <Form.Input key="lname" value={this.state.lname} field="lname" onChange={this.handleFormChange} placeholder='Last Name'/> ,
-      <Form.Input key="email" value={this.state.email} field="email" onChange={this.handleFormChange} placeholder='Email'/>,
+      <Form.Input key="username" value={this.state.username} field="username" onChange={this.handleFormChange} placeholder='Username'/>,
       <Form.Input key="maximumRent" value={this.state.maximumRent} field="maximumRent" onChange={this.handleFormChange} placeholder='Maximum Rent'/>,
-      <Form.Select key="accountType" value={this.state.accountType} field="accountType" onChange={this.handleFormChange} fluid label='Account Type' options={options} placeholder='Account Type' />
+      <Form.Select key="accountType" value={this.state.accountType} field="accountType" onChange={this.handleAccountTypeChange} fluid label='Account Type' options={options} placeholder='Account Type' />
     ]
+
+    const currentFieldsType = this.state.login ? this.state.fieldsToCorrectLogin : this.state.fieldsToCorrectCreateAccount;
+    const fieldsToCorrect = Object.keys(currentFieldsType);
+
     return (
       <Container>
         <TransitionablePortal
@@ -63,12 +126,18 @@ export default class Header extends Component {
               <Grid columns={1} centered>
                 <Grid.Column width={14}>
                   <Form>
-                    <Form.Input field="username" value={this.state.username} onChange={this.handleFormChange} placeholder='Username'/>
-                    <Form.Input field="password" value={this.state.password} onChange={this.handleFormChange} placeholder='Password'/>
+                    <Form.Input field="email" type="email" value={this.state.email} onChange={this.handleFormChange} placeholder='Email'/>
+                    <Form.Input field="password" type="password" value={this.state.password} onChange={this.handleFormChange} placeholder='Password'/>
                     {createAccountFields}
-                    <Button style={styles.controlButtons} type='submit'>Submit</Button>
-                    <Button style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
+                    <Button loading={this.props.isLoading} disabled={fieldsToCorrect.length != 0} style={styles.controlButtons} onClick={this.submitRegistrationForm} type='submit'>Submit</Button>
+                    <Button disabled={this.props.isLoading} style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
                   </Form>
+
+                  {this.props.loginErrorMessage != "" &&
+                    <Label style={styles.errorMessage} basic color='red'>
+                      {this.props.loginErrorMessage}
+                    </Label>
+                  }
                 </Grid.Column>
               </Grid>
             </Modal.Content>
@@ -80,6 +149,9 @@ export default class Header extends Component {
 }
 
 const styles = {
+  errorMessage: {
+    marginTop: "10px"
+  },
   modal: {
     maxWidth: "94%"
   },

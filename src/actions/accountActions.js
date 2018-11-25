@@ -29,31 +29,95 @@ export const signIn = (email, password) => dispatch => {
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then((data) => {
     const uid = data.user.uid;
+    Account.child(uid).once("value")
+    .then(snapshot => {
+      dispatch({
+       type: SIGN_IN,
+       payload: {
+         userId: uid,
+         error: "",
+         fname: snapshot.val().fname,
+         lname: snapshot.val().lname,
+         username: snapshot.val().username,
+         maximumRent: snapshot.val().maximumRent,
+         email: snapshot.val().email,
+         accountType: snapshot.val().accountType
+       }
+      });
+    })
+    .catch(error => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      dispatch({
+       type: SIGN_IN,
+       payload: {
+         userId: "",
+         error: errorMessage,
+       }
+      });
+    })
+  })
+  .catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
     dispatch({
      type: SIGN_IN,
-     payload: {userId: uid}
+     payload: {
+       userId: "",
+       error: errorMessage,
+     }
+    });
+  });
+}
+
+
+export const createAccount = (fname, lname, username, password, maximumRent, email, accountType) => dispatch => {
+  console.log("here")
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then( (data) => {
+    const uid = data.user.uid;
+    Account.child(uid).set({
+        fname,
+        lname,
+        username,
+        maximumRent,
+        email,
+        accountType
+    }, () => {
+      var databaseRef = Customer;
+
+      if(accountType == "Owner") {
+        databaseRef = Owner
+      }
+
+      databaseRef.child(uid).set({
+          uid: uid
+      }, () => {
+        dispatch({
+         type: CREATE_ACCOUNT,
+         payload: {
+           userId: uid,
+           error: "",
+           fname: fname,
+           lname: lname,
+           username: username,
+           maximumRent: maximumRent,
+           email: email,
+           accountType: accountType
+         }
+        });
+      })
     });
   })
   .catch(function(error) {
     var errorCode = error.code;
     var errorMessage = error.message;
-    console.log(errorMessage);
-  });
-}
-
-
-export const createAccount = (email, password) => dispatch => {
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then( (user) => {
-    const uid = user.uid;
     dispatch({
      type: CREATE_ACCOUNT,
-     payload: {userId: uid}
+     payload: {
+       userId: "",
+       error: errorMessage
+     }
     });
-  })
-  .catch(function(error) {
-  const errorCode = error.code;
-  const errorMessage = error.message;
-  console.log(errorMessage);
   });
 }
