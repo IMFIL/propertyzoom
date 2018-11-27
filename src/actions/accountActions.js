@@ -31,6 +31,10 @@ export const signIn = (email, password) => dispatch => {
     const uid = data.user.uid;
     Account.child(uid).once("value")
     .then(snapshot => {
+      var viewingList = [];
+      if(snapshot.val().viewingList) {
+        viewingList = snapshot.val().viewingList;
+      }
       dispatch({
        type: SIGN_IN,
        payload: {
@@ -41,7 +45,8 @@ export const signIn = (email, password) => dispatch => {
          username: snapshot.val().username,
          maximumRent: snapshot.val().maximumRent,
          email: snapshot.val().email,
-         accountType: snapshot.val().accountType
+         accountType: snapshot.val().accountType,
+         viewingList: viewingList
        }
       });
     })
@@ -103,7 +108,8 @@ export const createAccount = (fname, lname, username, password, maximumRent, ema
            username: username,
            maximumRent: maximumRent,
            email: email,
-           accountType: accountType
+           accountType: accountType,
+           viewingList: []
          }
         });
       })

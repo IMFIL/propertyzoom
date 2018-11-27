@@ -8,7 +8,8 @@ const initialState = {
   username: "" ,
   maximumRent: "",
   email: "",
-  accountType: "" 
+  accountType: "",
+  viewingList: []
 }
 
 export default function(state = initialState, action) {

@@ -37,8 +37,12 @@ class Propertyzoom extends Component {
     this.setState({loginOpen: true})
   }
 
-  launchMyAccount = () => {
+  launchMyAccountModal = () => {
     this.setState({myAccountOpen: true})
+  }
+
+  closeMyAccountModal = () => {
+    this.setState({myAccountOpen: false})
   }
 
   closeLoginModal = () => {
@@ -62,12 +66,25 @@ class Propertyzoom extends Component {
     }
   }
 
+  onUpdateAccount = (updatedUserInfo) => {
+    console.log(updatedUserInfo)
+  }
+
   render() {
+    const { fname, lname, username, maximumRent, email, accountType } = this.props;
+    const userInfo = {
+      fname,
+      lname,
+      username,
+      maximumRent,
+      email,
+      accountType
+    };
     return (
       <div>
-        <Header userId={this.props.userId} launchMyAccount={this.launchMyAccount} login={this.launchLoginModal} />
+        <Header userId={this.props.userId} launchMyAccount={this.launchMyAccountModal} login={this.launchLoginModal} />
         <LoginModal isLoading={this.state.isLoginLoading} loginErrorMessage={this.props.error} onSubmit={this.loginOrCreateAccount} onClose={this.closeLoginModal} open={this.state.loginOpen}/>
-        <MyAccountModal/>
+        <MyAccountModal onClose={this.closeMyAccountModal} open={this.state.myAccountOpen} userInfo={userInfo} onUpdate={this.onUpdateAccount}/>
         <Properties/>
         <Footer/>
       </div>
@@ -84,7 +101,8 @@ const mapStateToProps = state => {
     username: state.userInfo.username,
     maximumRent: state.userInfo.maximumRent,
     email: state.userInfo.email,
-    accountType: state.userInfo.accountType
+    accountType: state.userInfo.accountType,
+    viewingList: state.userInfo.viewingList
   }
 };
 
