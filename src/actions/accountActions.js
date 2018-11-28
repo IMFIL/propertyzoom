@@ -1,4 +1,4 @@
-import { CREATE_ACCOUNT, SIGN_IN, SIGN_OUT } from './types';
+import { CREATE_ACCOUNT, SIGN_IN, SIGN_OUT, UPDATE_ACCOUNT, DELETE_ACCOUNT } from './types';
 import * as firebase from 'firebase';
 
 var config = {
@@ -115,7 +115,7 @@ export const createAccount = (fname, lname, username, password, maximumRent, ema
       })
     });
   })
-  .catch(function(error) {
+  .catch((error) => {
     var errorCode = error.code;
     var errorMessage = error.message;
     dispatch({
@@ -126,4 +126,128 @@ export const createAccount = (fname, lname, username, password, maximumRent, ema
      }
     });
   });
+}
+
+export const deleteAccount = (userId, accountType) => dispatch => {
+  var user = firebase.auth().currentUser;
+
+  user.delete()
+  .then(() => {
+    Account.child(userId).remove()
+    .then(() => {
+      var databaseRef = Customer;
+      if(accountType == "Owner") {
+        databaseRef = Owner
+      }
+      databaseRef.child(userId).remove()
+      .then(() => {
+        dispatch({
+         type: DELETE_ACCOUNT,
+         payload: {}
+        });
+      })
+      .catch(error => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        dispatch({
+         type: DELETE_ACCOUNT,
+         payload: {error: errorMessage}
+        });
+      })
+    })
+    .catch(error => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      dispatch({
+       type: DELETE_ACCOUNT,
+       payload: {error: errorMessage}
+      });
+    })
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    dispatch({
+     type: DELETE_ACCOUNT,
+     payload: {error: errorMessage}
+    });
+  });
+}
+
+export const updateAccount = (updateInformation, userInformation) => dispatch => {
+  if(updateInformation.maximumRent) {
+    var updates = {
+      ['/Account/' + userInformation.userId + '/' + 'maximumRent']: updateInformation.maximumRent
+    };
+    firebase.database().ref().update(updates)
+    .then(() =>  {
+      userInformation.maximumRent = updateInformation.maximumRent;
+      dispatch({
+       type: UPDATE_ACCOUNT,
+       payload: {...userInformation}
+      });
+    })
+    .catch(error => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      dispatch({
+       type: UPDATE_ACCOUNT,
+       payload: {...userInformation, error: errorMessage}
+      });
+    });
+  }
+
+  else if(updateInformation.email) {
+    var updates = {
+      ['/Account/' + userInformation.userId + '/' + 'email']: updateInformation.email
+    };
+    var user = firebase.auth().currentUser;
+
+    user.updateEmail(updateInformation.email)
+    .then(() => {
+      firebase.database().ref().update(updates)
+      .then(() =>  {
+        userInformation.email = updateInformation.email;
+        dispatch({
+         type: UPDATE_ACCOUNT,
+         payload: {...userInformation}
+        });
+      })
+      .catch(error => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        dispatch({
+         type: UPDATE_ACCOUNT,
+         payload: {...userInformation, error: errorMessage}
+        });
+      });
+    }).catch(error => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      dispatch({
+       type: UPDATE_ACCOUNT,
+       payload: {...userInformation, error: errorMessage}
+      });
+    });
+  }
+
+  if(updateInformation.password) {
+    let user = firebase.auth().currentUser;
+
+    user.updatePassword(updateInformation.password)
+    .then(() =>  {
+      dispatch({
+       type: UPDATE_ACCOUNT,
+       payload: {...userInformation}
+      });
+    })
+    .catch(error => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      dispatch({
+       type: UPDATE_ACCOUNT,
+       payload: {...userInformation, error: errorMessage}
+      });
+    });
+  }
 }

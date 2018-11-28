@@ -23,7 +23,14 @@ export default class AccountSettings extends Component {
       email: props.userInfo.email,
       okayToUpdateEmail: false,
       okayToUpdateMaxRent: false,
-      okayToUpdatePassword: false
+      okayToUpdatePassword: false,
+      loading: false
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.state.loading) {
+      this.setState({loading: false});
     }
   }
 
@@ -34,6 +41,7 @@ export default class AccountSettings extends Component {
     if(okayToUpdateEmail) {
       userInformation.email = email;
       this.props.onUpdate(userInformation);
+      this.setState({loading: true});
     }
   }
 
@@ -45,6 +53,7 @@ export default class AccountSettings extends Component {
     if(okayToUpdateMaxRent) {
       userInformation.maximumRent = maximumRent;
       this.props.onUpdate(userInformation);
+      this.setState({loading: true});
     }
   }
 
@@ -55,6 +64,7 @@ export default class AccountSettings extends Component {
     if(okayToUpdatePassword) {
       userInformation.password = password;
       this.props.onUpdate(userInformation);
+      this.setState({loading: true});
     }
   }
 
@@ -102,10 +112,10 @@ export default class AccountSettings extends Component {
       <Container>
         <Grid columns={1} centered>
           <Grid.Column width={14}>
-            <Label>{this.props.userInfo.username}</Label>
             <Label>{this.props.userInfo.fname}</Label>
             <Label>{this.props.userInfo.lname}</Label>
             <Label>{this.props.userInfo.accountType}</Label>
+            <Label>{this.props.userInfo.username}</Label>
             <Divider />
             <Form>
               <Grid columns={2}>
@@ -123,19 +133,27 @@ export default class AccountSettings extends Component {
                     <Form.Input size='small' field="passwordConfirm" type="password" value={this.state.passwordConfirm} onChange={this.handleFormChangePasswordConfirm} placeholder='Confirm Password'/>
                   </Grid.Row>
                   <Grid.Row style={styles.formRows}>
-                    <Button onClick={this.updatePassword} disabled={!this.state.okayToUpdatePassword} size='small'>Change Password</Button>
+                    <Button loading={this.state.loading} onClick={this.updatePassword} disabled={!this.state.okayToUpdatePassword} size='small'>Change Password</Button>
+                  </Grid.Row>
+                  <Grid.Row style={styles.formRows}>
+                    <Button onClick={this.props.deleteAccount} negative>Delete Account</Button>
                   </Grid.Row>
                 </Grid.Column>
                 <Grid.Column>
                   <Grid.Row style={styles.formRows}>
-                    <Button onClick={this.updateEmail} disabled={!this.state.okayToUpdateEmail} size='small'>Change Email</Button>
+                    <Button loading={this.state.loading} onClick={this.updateEmail} disabled={!this.state.okayToUpdateEmail} size='small'>Change Email</Button>
                   </Grid.Row>
                   <Grid.Row style={styles.formRows}>
-                    <Button onClick={this.updateMaxRent} disabled={!this.state.okayToUpdateMaxRent} size='small'>Change Maximum Rent</Button>
+                    <Button loading={this.state.loading} onClick={this.updateMaxRent} disabled={!this.state.okayToUpdateMaxRent} size='small'>Change Maximum Rent</Button>
                   </Grid.Row>
                 </Grid.Column>
               </Grid>
             </Form>
+            {this.props.updateErrorMessage != "" &&
+              <Label style={styles.errorMessage} basic color='red'>
+                {this.props.loginErrorMessage}
+              </Label>
+            }
           </Grid.Column>
         </Grid>
       </Container>

@@ -7,7 +7,7 @@ import Properties from './components/properties';
 import LoginModal from './components/loginModal';
 import MyAccountModal from './components/myAccountModal';
 import { connect } from 'react-redux';
-import { createAccount, signIn } from './actions/accountActions'
+import { createAccount, signIn, updateAccount, deleteAccount, signOut } from './actions/accountActions'
 
 class Propertyzoom extends Component {
 
@@ -67,7 +67,28 @@ class Propertyzoom extends Component {
   }
 
   onUpdateAccount = (updatedUserInfo) => {
-    console.log(updatedUserInfo)
+    const userInformation = {
+      userId: this.props.userId,
+      fname: this.props.fname,
+      lname: this.props.lname,
+      username: this.props.username,
+      maximumRent: this.props.maximumRent,
+      email: this.props.email,
+      accountType: this.props.accountType,
+      viewingList: this.props.viewingList
+    };
+
+    this.props.updateAccount(updatedUserInfo, userInformation);
+  }
+
+  deleteAccount = () => {
+    this.props.deleteAccount(this.props.userId);
+    this.setState({myAccountOpen: false});
+  }
+
+  signOut = () => {
+    console.log("signOut");
+    this.props.signOut();
   }
 
   render() {
@@ -82,9 +103,9 @@ class Propertyzoom extends Component {
     };
     return (
       <div>
-        <Header userId={this.props.userId} launchMyAccount={this.launchMyAccountModal} login={this.launchLoginModal} />
+        <Header userId={this.props.userId} signOut={this.signOut} launchMyAccount={this.launchMyAccountModal} login={this.launchLoginModal} />
         <LoginModal isLoading={this.state.isLoginLoading} loginErrorMessage={this.props.error} onSubmit={this.loginOrCreateAccount} onClose={this.closeLoginModal} open={this.state.loginOpen}/>
-        <MyAccountModal onClose={this.closeMyAccountModal} open={this.state.myAccountOpen} userInfo={userInfo} onUpdate={this.onUpdateAccount}/>
+        <MyAccountModal deleteAccount={this.deleteAccount} updateErrorMessage={this.props.error} onClose={this.closeMyAccountModal} open={this.state.myAccountOpen} userInfo={userInfo} onUpdate={this.onUpdateAccount}/>
         <Properties/>
         <Footer/>
       </div>
@@ -93,6 +114,7 @@ class Propertyzoom extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     userId: state.userInfo.userId,
     error: state.userInfo.error,
@@ -108,7 +130,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
    createAccount: (fname, lname, username, password, maximumRent, email, accountType) => dispatch(createAccount(fname, lname, username, password, maximumRent, email, accountType)),
-   signIn: (email, password) => dispatch(signIn(email, password))
+   signIn: (email, password) => dispatch(signIn(email, password)),
+   updateAccount: (updateInformation, userInformation) => dispatch(updateAccount(updateInformation, userInformation)),
+   deleteAccount: (userId) => dispatch(deleteAccount(userId)),
+   signOut: () => dispatch(signOut())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Propertyzoom);
