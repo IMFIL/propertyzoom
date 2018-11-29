@@ -22,7 +22,7 @@ export default class Footer extends Component {
 
 const styles = {
   footerContainer: {
-    position: "absolute",
+    position: "fixed",
     bottom: 0,
     width: "100%"
   }

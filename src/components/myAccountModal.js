@@ -11,7 +11,7 @@ import {
   Tab } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import AccountSettings from './accountSettings';
-import ViewingList from './viewingList'
+import PropertyViewingList from './propertyViewingList'
 
 export default class Header extends Component {
 
@@ -22,7 +22,7 @@ export default class Header extends Component {
   render() {
     const panes = [
       { menuItem: 'Account Settings', render: () => <Tab.Pane attached={false}> <AccountSettings deleteAccount={this.props.deleteAccount} updateErrorMessage={this.props.updateErrorMessage} onUpdate={this.props.onUpdate} userInfo={this.props.userInfo}/> </Tab.Pane> },
-      { menuItem: 'Viewing List', render: () => <Tab.Pane attached={false}> <ViewingList/> </Tab.Pane> }
+      { menuItem: this.props.userInfo.accountType == "Owner" ? 'Properties' : 'Viewing List', render: () => <Tab.Pane attached={false}> <PropertyViewingList accountType={this.props.userInfo.accountType}/> </Tab.Pane> }
     ]
 
     return (

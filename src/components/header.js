@@ -35,8 +35,6 @@ export default class Header extends Component {
 
 const styles = {
   headerContainer: {
-    position: "absolute",
-    top: 0,
     width: "100%"
   }
 }
