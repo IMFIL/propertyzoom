@@ -22,25 +22,20 @@ export default class Header extends Component {
   render() {
     const panes = [
       { menuItem: 'Account Settings', render: () => <Tab.Pane attached={false}> <AccountSettings deleteAccount={this.props.deleteAccount} updateErrorMessage={this.props.updateErrorMessage} onUpdate={this.props.onUpdate} userInfo={this.props.userInfo}/> </Tab.Pane> },
-      { menuItem: this.props.userInfo.accountType == "Owner" ? 'Properties' : 'Viewing List', render: () => <Tab.Pane attached={false}> <PropertyViewingList accountType={this.props.userInfo.accountType}/> </Tab.Pane> }
+      { menuItem: this.props.userInfo.accountType == "Owner" ? 'Properties' : 'Viewing List', render: () => <Tab.Pane attached={false}> <PropertyViewingList userId={this.props.userInfo.userId} accountType={this.props.userInfo.accountType}/> </Tab.Pane> }
     ]
 
     return (
       <Container>
-        <TransitionablePortal
-          open={this.props.open}
-          onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)}
-          transition={{ animation: 'scale', duration: 500 }}>
-          <Modal  style={styles.modal} size="small" open={this.props.open} onClose={() => this.props.onClose()} >
-            <Modal.Content >
-              <Grid columns={1} centered>
-                <Grid.Column width={14}>
-                  <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
-                </Grid.Column>
-              </Grid>
-            </Modal.Content>
-          </Modal>
-        </TransitionablePortal>
+        <Modal style={styles.modal} size="small" open={this.props.open} onClose={() => this.props.onClose()} >
+          <Modal.Content >
+            <Grid columns={1} centered>
+              <Grid.Column width={14}>
+                <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+              </Grid.Column>
+            </Grid>
+          </Modal.Content>
+        </Modal>
       </Container>
     );
   }

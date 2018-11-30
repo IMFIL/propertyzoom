@@ -83,7 +83,7 @@ export default class Header extends Component {
     var fieldsLogin = this.state.fieldsToCorrectLogin;
     var fieldsCreateAccount = this.state.fieldsToCorrectCreateAccount;
 
-    if(e.target.value != "") {
+    if(e.target.value.trim() != "") {
       delete fieldsLogin[field];
       delete fieldsCreateAccount[field];
     }
@@ -107,7 +107,7 @@ export default class Header extends Component {
       <Form.Input key="fname" value={this.state.fname} field="fname" onChange={this.handleFormChange} placeholder='First Name'/>,
       <Form.Input key="lname" value={this.state.lname} field="lname" onChange={this.handleFormChange} placeholder='Last Name'/> ,
       <Form.Input key="username" value={this.state.username} field="username" onChange={this.handleFormChange} placeholder='Username'/>,
-      <Form.Input key="maximumRent" value={this.state.maximumRent} field="maximumRent" onChange={this.handleFormChange} placeholder='Maximum Rent'/>,
+      <Form.Input key="maximumRent" type="number" value={this.state.maximumRent} field="maximumRent" onChange={this.handleFormChange} placeholder='Maximum Rent'/>,
       <Form.Select key="accountType" value={this.state.accountType} field="accountType" onChange={this.handleAccountTypeChange} fluid label='Account Type' options={options} placeholder='Account Type' />
     ]
 
@@ -130,7 +130,7 @@ export default class Header extends Component {
                     <Form.Input field="password" type="password" value={this.state.password} onChange={this.handleFormChange} placeholder='Password'/>
                     {createAccountFields}
                     <Button loading={this.props.isLoading} disabled={fieldsToCorrect.length != 0} style={styles.controlButtons} onClick={this.submitRegistrationForm} type='submit'>Submit</Button>
-                    <Button disabled={this.props.isLoading} style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
+                    <Button color='blue' disabled={this.props.isLoading} style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
                   </Form>
 
                   {this.props.loginErrorMessage != "" &&

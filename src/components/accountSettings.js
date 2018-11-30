@@ -81,7 +81,7 @@ export default class AccountSettings extends Component {
 
   handleFormChangePassword = (e, { field }) => {
     var okayToUpdatePassword = false;
-    if(e.target.value == this.state.passwordConfirm && e.target.value != "") {
+    if(e.target.value == this.state.passwordConfirm && e.target.value.trim() != "") {
       okayToUpdatePassword = true;
     }
     this.setState({[field]: e.target.value, okayToUpdatePassword});
@@ -90,7 +90,7 @@ export default class AccountSettings extends Component {
   handleFormChangePasswordConfirm = (e, { field }) => {
     var okayToUpdatePassword = false;
 
-    if(e.target.value == this.state.password && e.target.value != "") {
+    if(e.target.value == this.state.password && e.target.value.trim() != "") {
       okayToUpdatePassword = true;
     }
 
@@ -100,7 +100,7 @@ export default class AccountSettings extends Component {
   handleFormChangeMaxRent = (e, { field }) => {
     var okayToUpdateMaxRent = false;
 
-    if(e.target.value != "" && e.target.value != this.props.userInfo.maximumRent) {
+    if(e.target.value.trim() != "" && e.target.value != this.props.userInfo.maximumRent) {
       okayToUpdateMaxRent = true
     }
 

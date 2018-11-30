@@ -11,11 +11,11 @@ var config = {
 };
 firebase.initializeApp(config);
 
-const db = firebase.database().ref();
-const Account = db.child('Account');
-const Customer = db.child('Customer');
-const Owner = db.child('Owner');
-const Property = db.child('Property');
+export const db = firebase.database().ref();
+export const Account = db.child('Account');
+export const Customer = db.child('Customer');
+export const Owner = db.child('Owner');
+export const fbProperty = db.child('Property');
 
 export const signOut = () => dispatch => {
   dispatch({
@@ -31,10 +31,6 @@ export const signIn = (email, password) => dispatch => {
     const uid = data.user.uid;
     Account.child(uid).once("value")
     .then(snapshot => {
-      var viewingList = [];
-      if(snapshot.val().viewingList) {
-        viewingList = snapshot.val().viewingList;
-      }
       dispatch({
        type: SIGN_IN,
        payload: {
@@ -45,8 +41,7 @@ export const signIn = (email, password) => dispatch => {
          username: snapshot.val().username,
          maximumRent: snapshot.val().maximumRent,
          email: snapshot.val().email,
-         accountType: snapshot.val().accountType,
-         viewingList: viewingList
+         accountType: snapshot.val().accountType
        }
       });
     })
@@ -77,7 +72,6 @@ export const signIn = (email, password) => dispatch => {
 
 
 export const createAccount = (fname, lname, username, password, maximumRent, email, accountType) => dispatch => {
-  console.log("here")
   firebase.auth().createUserWithEmailAndPassword(email, password)
   .then( (data) => {
     const uid = data.user.uid;
@@ -108,8 +102,7 @@ export const createAccount = (fname, lname, username, password, maximumRent, ema
            username: username,
            maximumRent: maximumRent,
            email: email,
-           accountType: accountType,
-           viewingList: []
+           accountType: accountType
          }
         });
       })

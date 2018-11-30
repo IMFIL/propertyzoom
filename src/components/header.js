@@ -19,7 +19,7 @@ export default class Header extends Component {
             }
 
             { this.props.userId && this.props.userId != "" &&
-              <Button floated='right' color='teal' onClick={() => this.props.signOut()}>Sign Out</Button>
+              <Button floated='right' color='red' onClick={() => this.props.signOut()}>Sign Out</Button>
             }
 
             { this.props.userId && this.props.userId != "" &&

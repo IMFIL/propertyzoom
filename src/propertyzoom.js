@@ -92,14 +92,15 @@ class Propertyzoom extends Component {
   }
 
   render() {
-    const { fname, lname, username, maximumRent, email, accountType } = this.props;
+    const { fname, lname, username, maximumRent, email, accountType, userId } = this.props;
     const userInfo = {
       fname,
       lname,
       username,
       maximumRent,
       email,
-      accountType
+      accountType,
+      userId
     };
     return (
       <div>
@@ -114,7 +115,6 @@ class Propertyzoom extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     userId: state.userInfo.userId,
     error: state.userInfo.error,
@@ -123,8 +123,7 @@ const mapStateToProps = state => {
     username: state.userInfo.username,
     maximumRent: state.userInfo.maximumRent,
     email: state.userInfo.email,
-    accountType: state.userInfo.accountType,
-    viewingList: state.userInfo.viewingList
+    accountType: state.userInfo.accountType
   }
 };
 

@@ -7,32 +7,34 @@ export default class Properties extends Component {
 
   render() {
     return (
-      <Grid centered stackable columns={3}>
-        <Grid.Row centered>
-          <Grid.Column width={5}>
-            <Property/>
-          </Grid.Column>
-          <Grid.Column width={5}>
-            <Property/>
-          </Grid.Column>
-          <Grid.Column width={5}>
-            <Property/>
-          </Grid.Column>
-        </Grid.Row>
+      <div style={styles.propertiesContainer}>
+        <Grid centered stackable columns={3}>
+          <Grid.Row centered>
+            <Grid.Column width={5}>
+            </Grid.Column>
+            <Grid.Column width={5}>
 
-        <Grid.Row centered>
-          <Grid.Column width={5}>
-            <Property/>
-          </Grid.Column>
-          <Grid.Column width={5}>
-            <Property/>
-          </Grid.Column>
-          <Grid.Column width={5}>
-            <Property/>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+            </Grid.Column>
+            <Grid.Column width={5}>
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row centered>
+            <Grid.Column width={5}>
+            </Grid.Column>
+            <Grid.Column width={5}>
+            </Grid.Column>
+            <Grid.Column width={5}>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     );
   }
+}
 
+const styles = {
+  propertiesContainer: {
+    paddingBottom: "50px"
+  }
 }
