@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react'
+import { Grid, Input } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import Property from './property';
 import {Owner, fbProperty, db} from '../actions/accountActions';
@@ -26,7 +26,6 @@ export default class Properties extends Component {
         .then(() => {
           db.update(updates)
           .then(() =>  {
-            console.log("here")
             this.props.updateProperties();
             this.props.deletePropertyFromViewingList(id);
           })
@@ -44,6 +43,19 @@ export default class Properties extends Component {
     }
   }
 
+  updateProperty = (key, value, id) => {
+    var updates = {
+      ['/Property/' + id + '/' + key]: value
+    };
+    db.update(updates)
+    .then(() =>  {
+      this.props.updateProperties();
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
   render() {
     const keys = Object.keys(this.props.properties);
     const fullRows = Math.floor(keys.length/3);
@@ -55,13 +67,13 @@ export default class Properties extends Component {
       rows.push(
         <Grid.Row key={keys[i] + "rows"}>
           <Grid.Column>
-            <Property onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i]]}/>
+            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i]]}/>
           </Grid.Column>
           <Grid.Column>
-            <Property onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i + 1]]}/>
+            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i + 1]]}/>
           </Grid.Column>
           <Grid.Column>
-            <Property onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i + 2]]}/>
+            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i + 2]]}/>
           </Grid.Column>
         </Grid.Row>
       );
@@ -70,7 +82,7 @@ export default class Properties extends Component {
     for(var j = 0; j < partialRows; j++) {
       remainderCols.push(
         <Grid.Column key={keys[j] + "remainder"}>
-          <Property onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[j]]}/>
+          <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[(j + fullRows * 3)]]}/>
         </Grid.Column>
       );
     }
@@ -78,6 +90,9 @@ export default class Properties extends Component {
     return (
       <div style={styles.propertiesContainer}>
         <Grid columns={3}>
+          <Grid.Row>
+            <Input style={styles.searchBar} icon='search' placeholder='Search...' />
+          </Grid.Row>
           {rows}
           <Grid.Row>
             {remainderCols}
@@ -93,5 +108,8 @@ const styles = {
     paddingBottom: "50px",
     paddingLeft: "20px",
     paddingRight: "20px"
+  },
+  searchBar: {
+    paddingLeft: "20px"
   }
 }
