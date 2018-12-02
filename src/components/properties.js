@@ -5,7 +5,18 @@ import Property from './property';
 import {Owner, fbProperty, db} from '../actions/accountActions';
 
 export default class Properties extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filteredProps: this.props.properties
+    };
+  }
   componentDidUpdate(prevProps) {
+    if(Object.keys(prevProps.properties).length == 0) {
+      this.setState({filteredProps: this.props.properties})
+    }
   }
 
   onDeleteProperty = (id) => {
@@ -56,8 +67,19 @@ export default class Properties extends Component {
     })
   }
 
+  handleFormChange = (type, e) => {
+    var filteredProps = {}
+    for(var property in this.props.properties) {
+      if(this.props.properties[property][type].toLowerCase() == e.target.value.toLowerCase() || e.target.value.trim() == "") {
+        filteredProps[this.props.properties[property].id] = this.props.properties[property]
+      }
+    }
+
+    this.setState({filteredProps});
+  }
+
   render() {
-    const keys = Object.keys(this.props.properties);
+    const keys = Object.keys(this.state.filteredProps);
     const fullRows = Math.floor(keys.length/3);
     const partialRows = keys.length % 3;
     var rows = [];
@@ -89,10 +111,30 @@ export default class Properties extends Component {
 
     return (
       <div style={styles.propertiesContainer}>
-        <Grid columns={3}>
+        <Grid stackable columns={6}>
           <Grid.Row>
-            <Input style={styles.searchBar} icon='search' placeholder='Search...' />
+            <Grid.Column>
+              <Input onChange={(e) => this.handleFormChange("bathrooms", e)} size='mini' style={styles.rooms} label='Bathrooms' placeholder='' />
+            </Grid.Column>
+            <Grid.Column>
+              <Input onChange={(e) => this.handleFormChange("bedrooms", e)} size='mini' style={styles.rooms} label='Bedrooms' placeholder='' />
+            </Grid.Column>
+            <Grid.Column>
+              <Input onChange={(e) => this.handleFormChange("location", e)} size='mini' style={styles.location} label='Location' placeholder='' />
+            </Grid.Column>
           </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Input onChange={(e) => this.handleFormChange("rent", e)} size='mini' style={styles.rent} label='Rent' placeholder='' />
+            </Grid.Column>
+            <Grid.Column>
+              <Input onChange={(e) => this.handleFormChange("propertyType", e)} size='mini' style={styles.rent} label='Type' placeholder='' />
+            </Grid.Column>
+            <Grid.Column>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Grid stackable columns={3}>
           {rows}
           <Grid.Row>
             {remainderCols}
@@ -109,7 +151,15 @@ const styles = {
     paddingLeft: "20px",
     paddingRight: "20px"
   },
-  searchBar: {
-    paddingLeft: "20px"
+  rooms: {
+    width: "50px"
+  },
+
+  location: {
+    width: "100px"
+  },
+
+  rent: {
+    width: "100px"
   }
 }
