@@ -22,7 +22,7 @@ export default class Header extends Component {
   render() {
     const panes = [
       { menuItem: 'Account Settings', render: () => <Tab.Pane attached={false}> <AccountSettings deleteAccount={this.props.deleteAccount} updateErrorMessage={this.props.updateErrorMessage} onUpdate={this.props.onUpdate} userInfo={this.props.userInfo}/> </Tab.Pane> },
-      { menuItem: this.props.userInfo.accountType == "Owner" ? 'Properties' : 'Viewing List', render: () => <Tab.Pane attached={false}> <PropertyViewingList userId={this.props.userInfo.userId} accountType={this.props.userInfo.accountType}/> </Tab.Pane> }
+      { menuItem: this.props.userInfo.accountType === "Owner" ? 'Properties' : 'Viewing List', render: () => <Tab.Pane attached={false}> <PropertyViewingList updateProperties={this.props.updateProperties} deletePropertyFromViewingList={this.deletePropertyFromViewingList} userInfo={this.props.userInfo}/> </Tab.Pane> }
     ]
 
     return (

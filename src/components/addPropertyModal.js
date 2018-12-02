@@ -49,8 +49,10 @@ export default class AddPropertyModal extends Component {
   }
 
   removeNewPictureLink = (key, index) => {
+    var photos = this.state.photos
     var photoToCorrect = this.state.photoToCorrect
     delete photoToCorrect[key];
+    delete photos[key];
 
     var photoCounter = this.state.photoCounter
     photoCounter.splice(index, 1);
@@ -75,7 +77,7 @@ export default class AddPropertyModal extends Component {
   handleFormChange = (e, { field }) => {
     var fields = this.state.fieldsToCorrect;
 
-    if(e.target.value.trim() != "") {
+    if(e.target.value.trim() !== "") {
       delete fields[field];
     }
 
@@ -90,7 +92,7 @@ export default class AddPropertyModal extends Component {
     var photoToCorrect = this.state.photoToCorrect
     var photos = this.state.photos
 
-    if(e.target.value.trim() != "") {
+    if(e.target.value.trim().match(/\.(jpeg|jpg|gif|png)$/) != null ) {
       delete photoToCorrect[key];
       photos[key] = e.target.value;
     }
@@ -155,7 +157,7 @@ export default class AddPropertyModal extends Component {
               )}
               <Button size="tiny" style={styles.controlButtons} onClick={this.addNewPictureLink}>Add Another Photo</Button>
               <Form.Select field="propertyType" value={this.state.propertyType} onChange={this.handlePropertyTypeChange} fluid label='Property Type' options={options} placeholder='Property Type' />
-              <Button disabled={fieldsToCorrect.length != 0 || photoToCorrect.length != 0} style={styles.controlButtons} onClick={this.addNewProperty} type='submit'>Add Property</Button>
+              <Button disabled={fieldsToCorrect.length !== 0 || photoToCorrect.length !== 0} style={styles.controlButtons} onClick={this.addNewProperty} type='submit'>Add Property</Button>
             </Form>
             </Grid.Column>
           </Grid>

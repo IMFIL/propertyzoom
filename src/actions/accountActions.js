@@ -85,7 +85,7 @@ export const createAccount = (fname, lname, username, password, maximumRent, ema
     }, () => {
       var databaseRef = Customer;
 
-      if(accountType == "Owner") {
+      if(accountType === "Owner") {
         databaseRef = Owner
       }
 
@@ -129,7 +129,7 @@ export const deleteAccount = (userId, accountType) => dispatch => {
     Account.child(userId).remove()
     .then(() => {
       var databaseRef = Customer;
-      if(accountType == "Owner") {
+      if(accountType === "Owner") {
         databaseRef = Owner
       }
       databaseRef.child(userId).remove()

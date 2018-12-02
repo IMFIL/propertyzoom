@@ -14,15 +14,15 @@ export default class Header extends Component {
           <Grid.Column width={8}>
           </Grid.Column>
           <Grid.Column width={5}>
-            { (!this.props.userId || this.props.userId == "") &&
+            { (!this.props.userId || this.props.userId === "") &&
               <Button floated='right' color='teal' onClick={() => this.props.login()}>Login</Button>
             }
 
-            { this.props.userId && this.props.userId != "" &&
+            { this.props.userId && this.props.userId !== "" &&
               <Button floated='right' color='red' onClick={() => this.props.signOut()}>Sign Out</Button>
             }
 
-            { this.props.userId && this.props.userId != "" &&
+            { this.props.userId && this.props.userId !== "" &&
               <Button floated='right' color='teal' onClick={() => this.props.launchMyAccount()}>My account</Button>
             }
 

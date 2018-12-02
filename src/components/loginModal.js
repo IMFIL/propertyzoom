@@ -46,7 +46,7 @@ export default class Header extends Component {
   submitRegistrationForm = () => {
     const { fname, lname, username, password, maximumRent, email, accountType } = this.state;
     const type =  this.state.login ? "login" : "createAccount";
-    const userInformation = type == "createAccount" ? {
+    const userInformation = type === "createAccount" ? {
       fname: fname,
       lname: lname,
       username: username,
@@ -83,12 +83,12 @@ export default class Header extends Component {
     var fieldsLogin = this.state.fieldsToCorrectLogin;
     var fieldsCreateAccount = this.state.fieldsToCorrectCreateAccount;
 
-    if(e.target.value.trim() != "") {
+    if(e.target.value.trim() !== "") {
       delete fieldsLogin[field];
       delete fieldsCreateAccount[field];
     }
     else {
-      if(field == "password" || field == "email") {
+      if(field === "password" || field === "email") {
         fieldsLogin[field] = true;
         fieldsCreateAccount[field] = true;
       }
@@ -129,11 +129,11 @@ export default class Header extends Component {
                     <Form.Input field="email" type="email" value={this.state.email} onChange={this.handleFormChange} placeholder='Email'/>
                     <Form.Input field="password" type="password" value={this.state.password} onChange={this.handleFormChange} placeholder='Password'/>
                     {createAccountFields}
-                    <Button loading={this.props.isLoading} disabled={fieldsToCorrect.length != 0} style={styles.controlButtons} onClick={this.submitRegistrationForm} type='submit'>Submit</Button>
+                    <Button loading={this.props.isLoading} disabled={fieldsToCorrect.length !== 0} style={styles.controlButtons} onClick={this.submitRegistrationForm} type='submit'>Submit</Button>
                     <Button color='blue' disabled={this.props.isLoading} style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
                   </Form>
 
-                  {this.props.loginErrorMessage != "" &&
+                  {this.props.loginErrorMessage !== "" &&
                     <Label style={styles.errorMessage} basic color='red'>
                       {this.props.loginErrorMessage}
                     </Label>

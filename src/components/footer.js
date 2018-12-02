@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Grid, Image, Button } from 'semantic-ui-react'
+import { Segment, Grid } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 
 export default class Footer extends Component {
