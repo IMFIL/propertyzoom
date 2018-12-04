@@ -135,9 +135,6 @@ export default class AccountSettings extends Component {
                   <Grid.Row style={styles.formRows}>
                     <Button loading={this.state.loading} onClick={this.updatePassword} disabled={!this.state.okayToUpdatePassword} size='small'>Change Password</Button>
                   </Grid.Row>
-                  <Grid.Row style={styles.formRows}>
-                    <Button onClick={this.props.deleteAccount} negative>Delete Account</Button>
-                  </Grid.Row>
                 </Grid.Column>
                 <Grid.Column>
                   <Grid.Row style={styles.formRows}>

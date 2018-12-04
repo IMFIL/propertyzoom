@@ -14,7 +14,7 @@ export default class Properties extends Component {
     };
   }
   componentDidUpdate(prevProps) {
-    if(Object.keys(prevProps.properties).length == 0) {
+    if(Object.keys(prevProps.properties).length == 0 && Object.keys(this.props.properties).length != 0) {
       this.setState({filteredProps: this.props.properties})
     }
   }

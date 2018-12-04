@@ -129,7 +129,7 @@ export default class Header extends Component {
                     <Form.Input field="email" type="email" value={this.state.email} onChange={this.handleFormChange} placeholder='Email'/>
                     <Form.Input field="password" type="password" value={this.state.password} onChange={this.handleFormChange} placeholder='Password'/>
                     {createAccountFields}
-                    <Button loading={this.props.isLoading} disabled={fieldsToCorrect.length !== 0} style={styles.controlButtons} onClick={this.submitRegistrationForm} type='submit'>Submit</Button>
+                    <Button disabled={fieldsToCorrect.length !== 0} style={styles.controlButtons} onClick={this.submitRegistrationForm} type='submit'>Submit</Button>
                     <Button color='blue' disabled={this.props.isLoading} style={styles.controlButtons} onClick={this.alterFormType}>{this.state.login ? "Create account instead" : "Login instead"}</Button>
                   </Form>
 
