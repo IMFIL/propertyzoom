@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import Header from './components/header';
 import Footer from './components/footer';
-import Properties from './components/properties';
-import LoginModal from './components/loginModal';
-import MyAccountModal from './components/myAccountModal';
+import Properties from './propertySubSystem/properties';
+import LoginModal from './accountSubSystem/loginModal';
+import MyAccountModal from './accountSubSystem/myAccountModal';
 import { connect } from 'react-redux';
 import { createAccount, signIn, updateAccount, deleteAccount, signOut } from './actions/accountActions'
 import { updateProperties } from './actions/propertyActions';

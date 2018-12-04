@@ -22,6 +22,10 @@ export default class Properties extends Component {
     else if(Object.keys(prevProps.properties).length != 0 && Object.keys(this.props.properties).length == 0) {
       this.setState({filteredProps: {}});
     }
+
+    else if(Object.keys(prevProps.properties).length != Object.keys(this.props.properties).length) {
+      this.setState({filteredProps: this.props.properties});
+    }
   }
 
   onDeleteProperty = (id) => {

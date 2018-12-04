@@ -11,7 +11,7 @@ import {
   Tab } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import AccountSettings from './accountSettings';
-import PropertyViewingList from './propertyViewingList'
+import PropertyViewingList from '../propertySubSystem/propertyViewingList'
 
 export default class Header extends Component {
 
