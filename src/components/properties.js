@@ -13,9 +13,14 @@ export default class Properties extends Component {
       filteredProps: this.props.properties
     };
   }
+
   componentDidUpdate(prevProps) {
     if(Object.keys(prevProps.properties).length == 0 && Object.keys(this.props.properties).length != 0) {
-      this.setState({filteredProps: this.props.properties})
+      this.setState({filteredProps: this.props.properties});
+    }
+
+    else if(Object.keys(prevProps.properties).length != 0 && Object.keys(this.props.properties).length == 0) {
+      this.setState({filteredProps: {}});
     }
   }
 
@@ -85,17 +90,19 @@ export default class Properties extends Component {
     var rows = [];
     var remainderCols = []
 
+    console.log(fullRows, partialRows);
+
     for(var i = 0; i < fullRows * 3;) {
       rows.push(
         <Grid.Row key={keys[i] + "rows"}>
           <Grid.Column>
-            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i]]}/>
+            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.state.filteredProps[keys[i]]}/>
           </Grid.Column>
           <Grid.Column>
-            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i + 1]]}/>
+            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.state.filteredProps[keys[i + 1]]}/>
           </Grid.Column>
           <Grid.Column>
-            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[i + 2]]}/>
+            <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.state.filteredProps[keys[i + 2]]}/>
           </Grid.Column>
         </Grid.Row>
       );
@@ -104,7 +111,7 @@ export default class Properties extends Component {
     for(var j = 0; j < partialRows; j++) {
       remainderCols.push(
         <Grid.Column key={keys[j] + "remainder"}>
-          <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.props.properties[keys[(j + fullRows * 3)]]}/>
+          <Property onUpdateProperty={this.updateProperty} onDelete={this.onDeleteProperty} userInfo={this.props.userInfo} viewMore={true} propertyInfo={this.state.filteredProps[keys[(j + fullRows * 3)]]}/>
         </Grid.Column>
       );
     }
